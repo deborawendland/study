@@ -1,6 +1,6 @@
-package factory.pattern;
+package factory;
 
-import factory.pattern.service.ShapeFactory;
+import factory.service.ShapeFactory;
 
 public class App {
 

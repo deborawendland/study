@@ -1,4 +1,4 @@
-package factory.pattern.model;
+package factory.model;
 
 public class Circle implements Shape {
 

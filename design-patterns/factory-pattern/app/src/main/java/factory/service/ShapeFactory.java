@@ -1,9 +1,9 @@
-package factory.pattern.service;
+package factory.service;
 
-import factory.pattern.model.Circle;
-import factory.pattern.model.Shape;
-import factory.pattern.model.Square;
-import factory.pattern.model.Triangle;
+import factory.model.Circle;
+import factory.model.Shape;
+import factory.model.Square;
+import factory.model.Triangle;
 
 public class ShapeFactory {
 
