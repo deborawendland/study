@@ -10,10 +10,11 @@ def compare_items_source_to_replica(source, replica, operations, item_source):
         if filecmp.cmp(path_item_source, path_item_replica, shallow=False):
             operations["items"]["keep"].append(path_item_replica)
         else:
-            operations["items"]["copy_content"].append(path_item_source)
+            operations["items"]["copy_content"].append((path_item_source, path_item_replica))
 
     else:
-        operations["items"]["create"].append(path_item_source)
+        path_item_replica = PATH_ITEM.format(path=replica["path"], item=item_source)
+        operations["items"]["create"].append((path_item_source, path_item_replica))
 
 def compare_items_replica_to_source(source, replica, operations, item_replica):
     path_item_replica = PATH_ITEM.format(path=replica["path"], item=item_replica)
