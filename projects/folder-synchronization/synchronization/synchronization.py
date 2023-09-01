@@ -1,73 +1,45 @@
 import settings
-import os
-import operations.operations as op
+from content_comparision import content_comparision, folder_content
 
+def analyse_content(source, replica):
+    folder_content.get_structure(source)
+    folder_content.get_structure(replica)
 
-def check_folder(folderpath, replica):
-    print (f"checking items in {folderpath}...")
-    if os.path.isdir(folderpath):
-        return os.listdir(folderpath)
-    else:
-        if replica:
-            print (f"creating {folderpath} directory...")
-            os.mkdir(folderpath)
-            return None
-        else:
-            raise NotADirectoryError("Folder not found.")
+    # print (f"source: {source}")
+    # print (f"replica: {replica}")
+
+    operations = {
+        "items": {
+            "create": [],
+            "delete": [],
+            "copy_content": [],
+            "keep": []
+        },
+        "folders": {
+            "create": [],
+            "delete": [],
+            "keep": []
+        }
         
+    }
+    
+    content_comparision.compare_structures(source, replica, operations)
 
-def check_items(source, replica):
-    copy = list(set(source) - set(replica))
-    delete = list(set(replica) - set(source))
-    flag = False
-
-    if copy:
-        flag = op.copy(source, replica, copy, all=False)
-        while flag:
-            flag = op.copy(source, replica, copy, all=False)
-        flag = False
-
-    if delete:
-        flag = op.delete(source, replica, delete, all=False)
-        while flag:
-            flag = op.delete(source, replica, delete, all=False)
-
-
-def compare_folder_items(source, replica):
-    if not source["items"] or source["items"] is None:
-        if not replica["items"] or replica["items"] is None:
-            print ("Source items match replica items. No operation needed.") 
-        else: 
-            print ("Source items unmatch replica items. Deletion operation needed...")
-            op.delete(source, replica, source["items"], all=True)
-    else: 
-        if not replica["items"] or replica["items"] is None:
-            print ("Source items unmatch replica items. Copy operation needed.")
-            op.copy(source, replica, source["items"], all=True)
-        else: 
-            if set(source["items"]) == set(replica["items"]):
-                print ("Source items match replica items. No operation needed...")
-            else:
-                print ("Source items unmatch replica items. Checking individual files...")
-                check_items(source, replica)
-
-
+    return operations
 
 def run_sync():
     source_pathname = f"{settings.source_folder_path}/{settings.source_folder_name}"
     replica_pathname = f"{settings.replica_folder_path}/{settings.replica_folder_name}"
 
-    source = {"path": source_pathname,
-              "items": check_folder(source_pathname, False)}
-    replica= {"path": replica_pathname,
-              "items": check_folder(replica_pathname, True)}
+    source = {
+        "path": source_pathname,
+        "items": folder_content.get_folder_content(source_pathname, False)
+    }
+    replica = {
+        "path": replica_pathname,
+        "items": folder_content.get_folder_content(replica_pathname, True)
+    }
 
-    # print (source["items"])
-    # print (replica["items"])
+    operations = analyse_content(source, replica)
 
-    compare_folder_items(source, replica)
-
-
-
-
-
+    print (operations)
