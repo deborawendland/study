@@ -58,7 +58,7 @@ def compare_folders(folder, item, operations, is_source):
                 source_folders.append(os.path.basename(item_source['path']))
 
         if os.path.basename(item['path']) not in source_folders:
-            item_source = register_operation(operations['folders']['delete'], folder['path'], os.path.basename(item['path']))
+            item_source = register_operation(operations['folders']['delete'], item['path'], '')
             compare_structures(item_source, item, operations)
 
 def compare_structures(source, replica, operations):
