@@ -9,7 +9,7 @@ def create_items(items):
             shutil.copyfile(source, replica)
             logging.info(f'created item:     {source} to {replica}')
         except Exception as error:
-            logging.error(f'error created item:     {source} to {replica} - {error}')
+            logging.error(f'error creating item:     {source} to {replica} - {error}')
 
 def delete_items(items):
     for item in items:
@@ -17,12 +17,17 @@ def delete_items(items):
             os.remove(item)
             logging.info(f'deleted item:     {item}')
         except Exception as error:
-            logging.error(f'error deleted item:     {item} - {error}')
+            logging.error(f'error deleting item:     {item} - {error}')
 
 def copy_items(items):
     for source, replica in items:
-        logging.info(f'copying item:      {source} to {replica}...')
+        try:
+            os.remove(replica)
+            shutil.copy2(source, replica)
+            logging.info(f'copied item:      {source} to {replica}...')
+        except Exception as error:
+            logging.error(f'error copying item:      {source} to {replica} - {error}')
 
 def keep_items(items):
     for item in items:
-        logging.info(f'keeping item:      {item}...')
+        logging.info(f'kept item:      {item}')
