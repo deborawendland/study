@@ -20,12 +20,15 @@ def get_init_parameters():
     params = {}
 
     if args.interval:
-        params['sync_interval'] = args.interval
+        params['sync_interval'] = int(args.interval)
     else:
         params['sync_interval'] = settings.sync_interval
     
     if args.log:
-        params['log_filepath'] = os.path.normpath(os.path.join(args.log, settings.log_filename)) 
+        if os.path.isdir(args.log):
+            params['log_filepath'] = os.path.normpath(os.path.join(args.log, settings.log_filename)) 
+        else:
+            params['log_filepath'] = os.path.normpath(args.log)
     else:
         params['log_filepath'] = os.path.normpath(os.path.join(settings.log_filepath, settings.log_filename))
 
