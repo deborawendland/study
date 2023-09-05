@@ -45,10 +45,15 @@ def get_init_parameters():
     return params  
 
 def set_logging_config(filepath):
-    logging.basicConfig(filename=filepath, 
-                        level=logging.INFO, filemode='w', 
-                        format='%(asctime)s - %(levelname)s - %(message)s', 
-                        datefmt='%d-%b-%y %H:%M:%S')
+    logging.root.handlers = []
+    logging.basicConfig(handlers=[
+                            logging.FileHandler(filepath),
+                            logging.StreamHandler()
+                        ],
+                        level=logging.INFO, 
+                        format="%(asctime)s [ %(levelname)s ] %(message)s", 
+                        datefmt="%d-%b-%y %H:%M:%S"
+)
 
 def main():
     params = get_init_parameters()
@@ -56,8 +61,8 @@ def main():
 
     logging.info('app starting...')
 
-    synchronization.run_sync(params)
-    # scheduler.run_scheduler(params, synchronization.run_sync)
+    # synchronization.run_sync(params)
+    scheduler.run_scheduler(params, synchronization.run_sync)
 
 if __name__ == '__main__':
     main()
