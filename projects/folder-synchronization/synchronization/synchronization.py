@@ -1,14 +1,12 @@
 from content_comparision import content_comparision, folder_content
 from operations import operations as op
 import logging
+import os
 
 def analyse_content(source, replica):
-    logging.info(f'comparing source: {source["path"]} to replica: {replica["path"]}...')
+    logging.info(f'comparing source: {os.path.normpath(source["path"])} to replica: {os.path.normpath(replica["path"])}...')
     folder_content.get_structure(source)
     folder_content.get_structure(replica)
-
-    # print (f'source: {source}')
-    # print (f'replica: {replica}')
 
     operations = {
         'items': {
@@ -40,6 +38,5 @@ def run_sync(params):
     }
 
     operations = analyse_content(source, replica)
-    # print (operations)
     op.perform_operations(operations)
     
