@@ -2,13 +2,13 @@ import os
 
 def if_folder_in_path(path, items):
     for item in items:
-        if os.path.isdir(f"{path}/{item}"):
+        if os.path.isdir(os.path.normpath(os.path.join(path, item))):
             return True
     return False
 
 def get_folders_in_path(folder):
     for item in folder["items"]:
-        path_item = "{path}/{item}".format(path=folder["path"])
+        path_item = os.path.normpath(os.path.join(folder["path"], item))
         if os.path.isdir(path_item):
             folder_items = get_folder_content(path_item, False)
             new_folder = {
@@ -37,7 +37,7 @@ def get_folder_content(path, replica):
 def get_structure(folder):
     if if_folder_in_path(folder["path"], folder["items"]):
         for index, item in enumerate(folder["items"]):
-            path_item = "{path}/{item}".format(path=folder["path"], item=item)
+            path_item = os.path.normpath(os.path.join(folder["path"], item))
             if os.path.isdir(path_item):
                 folder_items = get_folder_content(path_item, False)
                 new_folder = {
