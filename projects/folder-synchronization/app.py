@@ -37,7 +37,7 @@ def get_init_parameters():
     if args.replica:
         params["replica"] = args.replica
     else:
-        params["replica"] = settings.source_folder_path
+        params["replica"] = settings.replica_folder_path
 
     return params  
 
