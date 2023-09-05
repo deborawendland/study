@@ -13,5 +13,5 @@ def perform_operations(operations):
     item_op.delete_items(operations['items']['delete'])
     fold_op.delete_folders(operations['folders']['delete'])
 
-    fold_op.keep_folders(operations['folders']['keep'])
-    item_op.keep_items(operations['items']['keep'])
+    # fold_op.keep_folders(operations['folders']['keep'])
+    # item_op.keep_items(operations['items']['keep'])
