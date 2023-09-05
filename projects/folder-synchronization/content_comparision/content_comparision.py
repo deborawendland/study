@@ -46,6 +46,7 @@ def compare_folders_source_to_replica(replica, operations, item_source):
                 'path': path_folder_replica,
                 'items': []
             }
+            compare_structures(item_source, item_replica, operations)
     
 def compare_folders_replica_to_source(source, operations, item_replica):
     source_folders = []
