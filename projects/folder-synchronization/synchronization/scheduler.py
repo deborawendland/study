@@ -7,6 +7,8 @@ def run_scheduler(params, task):
     logging.info('scheduler starting...')
     
     schedule.every(params['sync_interval']).seconds.do(task, params)
+    
+    task(params)
     while True:
         schedule.run_pending()
         time.sleep(1)
