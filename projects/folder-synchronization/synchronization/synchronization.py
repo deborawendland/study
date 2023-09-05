@@ -1,5 +1,6 @@
 import settings
 from content_comparision import content_comparision, folder_content
+from operations import operations as op
 
 def analyse_content(source, replica):
     folder_content.get_structure(source)
@@ -12,7 +13,7 @@ def analyse_content(source, replica):
         "items": {
             "create": [],
             "delete": [],
-            "copy_content": [],
+            "copy": [],
             "keep": []
         },
         "folders": {
@@ -27,19 +28,17 @@ def analyse_content(source, replica):
 
     return operations
 
-def run_sync():
-    source_pathname = f"{settings.source_folder_path}/{settings.source_folder_name}"
-    replica_pathname = f"{settings.replica_folder_path}/{settings.replica_folder_name}"
-
+def run_sync(params):
     source = {
-        "path": source_pathname,
-        "items": folder_content.get_folder_content(source_pathname, False)
+        "path": params["source"],
+        "items": folder_content.get_folder_content(params["source"], False)
     }
     replica = {
-        "path": replica_pathname,
-        "items": folder_content.get_folder_content(replica_pathname, True)
+        "path": params["replica"],
+        "items": folder_content.get_folder_content(params["replica"], True)
     }
 
     operations = analyse_content(source, replica)
-
-    print (operations)
+    # print (operations)
+    op.perform_operations(operations)
+    

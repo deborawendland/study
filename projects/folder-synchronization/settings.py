@@ -1,8 +1,10 @@
 # folder paths
-source_folder_path = "./data"
-source_folder_name = "source"
-replica_folder_path = "./data"
-replica_folder_name = "replica"
+source_folder_path = "./data/source"
+replica_folder_path = "./data/replica"
 
 #synchronization
-sync_interval = 5 #in seconds
+sync_interval = 20 #in seconds
+
+#logging
+log_filepath = "./"
+log_filename = "app.log"
