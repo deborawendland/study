@@ -11,6 +11,8 @@ def read_input_file():
 
 def write_output_file(output):
     # write output fastq file
+    if not os.path.isdir(settings.OUTPUT_FOLDER):
+        os.mkdir(settings.OUTPUT_FOLDER)
     filepath =  os.path.join(settings.OUTPUT_FOLDER, f'output_{settings.L}')
     print (f'creating output file: {filepath}')
     with open(filepath, "w") as file:
