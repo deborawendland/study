@@ -1,28 +1,26 @@
 from bitstring import BitArray
-import settings
+from model.read import Read
+from settings import L as line_size
 
 def enconde_file(file_bits):
-    letters_in_line = settings.L
     len_byte = 8
     
-    result = []
-    for line in range(0, int(len(file_bits)), len_byte*letters_in_line): #line
-        letters = []
-        for byte in range(0, len_byte*letters_in_line, len_byte): #byte
+    result = list()
+    for line in range(0, int(len(file_bits)), len_byte*line_size): #line
+        read = Read()
+        for byte in range(0, len_byte*line_size, len_byte): #byte
             bits = []
             for bit in range (0, len_byte): #bit
                 bits.append(file_bits[line+byte+bit])
-            letters.append(encode_byte(bits))
-        result.append(letters)
+            encode_byte(read, bits)
+        result.append(read)
+        read = ''
     return result
 
 
-def encode_byte(b):
-    return {
-        "nucleotide": encode_nucleotide(b[:2]),
-        "confidence": encode_confidence(b[2:])
-    }
-
+def encode_byte(read, b):
+    read.add_nucleotide(encode_nucleotide(b[:2]))
+    read.add_confidence(encode_confidence(b[2:]))
 
 def encode_nucleotide(b):
     if b[0] == 0:
@@ -39,3 +37,11 @@ def encode_nucleotide(b):
 def encode_confidence(b):
     confidence_int = BitArray(b)
     return(chr(confidence_int.uint + 33))
+
+def build_output(result):
+    output = ''
+    count = 1
+    for read in result:
+        output = output + read.to_string(count)
+        count += 1
+    return output
