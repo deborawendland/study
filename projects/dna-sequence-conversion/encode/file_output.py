@@ -13,7 +13,7 @@ def create_read(line, count):
 '''
     
 
-def build_output_file(result):
+def build_output(result):
     output = ''
     count = 1
     for line in result:

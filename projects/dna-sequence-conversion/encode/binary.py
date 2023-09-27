@@ -1,4 +1,21 @@
 from bitstring import BitArray
+import settings
+
+def enconde_file(file_bits):
+    letters_in_line = settings.L
+    len_byte = 8
+    
+    result = []
+    for line in range(0, int(len(file_bits)), len_byte*letters_in_line): #line
+        letters = []
+        for byte in range(0, len_byte*letters_in_line, len_byte): #byte
+            bits = []
+            for bit in range (0, len_byte): #bit
+                bits.append(file_bits[line+byte+bit])
+            letters.append(encode_byte(bits))
+        result.append(letters)
+    return result
+
 
 def encode_byte(b):
     return {
