@@ -1,8 +1,15 @@
 class Read:
 
-    def __init__(self):
-        self.nucleotides = []
-        self.confidences = []
+    def __init__(self, nucleotides=None, confidences=None):
+        if nucleotides:
+            self.nucleotides = nucleotides
+        else:
+            self.nucleotides = []
+
+        if confidences:
+            self.confidences = confidences
+        else:
+            self.confidences = []
 
     def set_nucleotides(self, nucleotides):
         self.nucleotides = nucleotides
@@ -23,7 +30,6 @@ class Read:
         self.confidences.append(confidence)
 
     def to_string(self, count):
-        print(''.join(self.nucleotides))
         return '''@READ_{count}
 {nucleotides}
 +READ_{count}
