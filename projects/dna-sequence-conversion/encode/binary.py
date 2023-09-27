@@ -1,8 +1,8 @@
 from bitstring import BitArray
 from model.read import Read
-from settings import L as line_size
 
-def enconde_file(file_bits):
+def enconde_file(file_bits, line_size):
+    print ('encoding file')
     len_byte = 8
     
     result = list()
@@ -10,11 +10,13 @@ def enconde_file(file_bits):
         read = Read()
         for byte in range(0, len_byte*line_size, len_byte): #byte
             bits = []
+            if line + byte >= len(file_bits):
+                break
+            
             for bit in range (0, len_byte): #bit
                 bits.append(file_bits[line+byte+bit])
             encode_byte(read, bits)
         result.append(read)
-        read = ''
     return result
 
 
@@ -35,8 +37,11 @@ def encode_nucleotide(b):
             return 'T'  # 11
 
 def encode_confidence(b):
-    confidence_int = BitArray(b)
-    return(chr(confidence_int.uint + 33))
+    if len(b) != 6:
+        raise TypeError('Expected len() = 6, got {size} in array {array}').format(size = len(b), array = b)
+    else: 
+        confidence_int = BitArray(b)
+        return(chr(confidence_int.uint + 33))
 
 def build_output(result):
     output = ''
